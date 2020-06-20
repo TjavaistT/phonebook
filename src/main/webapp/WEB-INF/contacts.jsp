@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;"  pageEncoding="UTF-8" language="java" %>
+<%@ page contentType="text/html;"  pageEncoding="UTF-8" %>
 <%@ page import="com.phonebook.web.ControllerHtml" %>
 <%@ page import="com.phonebook.web.ControllerRest" %>
 
@@ -63,15 +63,15 @@
             </div>
 
                 <c:forEach items="${contacts}" var = "contact">
-                <jsp:useBean id="contact" scope="page" type="com.phonebook.model.Contact"/>
+                <jsp:useBean id="contact" type="com.phonebook.model.Contact"/>
 
             <div class="contact row " data-contactId="${contact.id}">
-                <div class="col-2 border-bottom border-dark py-3" data-name="name" data-type="field" onclick="showContact(1)">
+                <div class="col-2 border-bottom border-dark py-3" data-name="name" data-type="field">
                      ${contact.name}
                 </div>
                 <div class="col-4 phones" <% if(contact.getNumbers().size() <= 1){ %> style="display: flex;" <% } %> >
                     <c:forEach items="${contact.numbers}" var="phone">
-                    <jsp:useBean id="phone" scope="page" type="com.phonebook.model.Phone"/>
+                    <jsp:useBean id="phone"  type="com.phonebook.model.Phone"/>
 
                     <div class="row phone  border-bottom border-dark py-3" data-phoneId="${phone.id()}"
                             <% if(contact.getNumbers().size() <= 1){ %> style="flex-grow: 3;" <% } %> >
@@ -122,7 +122,7 @@
 
                 <div class="form-group">
                     <label for="${ControllerHtml.CONTACT_NAME}" class="col-form-label">Имя</label>
-                    <input type="text" class="form-control" name="${ControllerHtml.CONTACT_NAME}" placeholder="Имя">
+                    <input type="text" id="${ControllerHtml.CONTACT_NAME}" class="form-control" name="${ControllerHtml.CONTACT_NAME}" placeholder="Имя">
                 </div>
 
                 <div class="form-group">
@@ -142,48 +142,5 @@
             </div>
         </form>
     </div>
-</div>
-
-    <div class="modal fade" tabindex="-1" id="editRow">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" ></h4>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-                <div class="modal-body">
-                    <form class="modal-form">
-                        <div class="row">
-
-                            <div class="col-2">Герхард</div>
-
-                            <div class="col-6">
-                                <div class="row">
-                                    <div class="col-4">79780001235 </div>
-                                    <div class="col-4">Добавить номер </div>
-                                    <div class="col-4">Удалить номер </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4">79780001235 </div>
-                                    <div class="col-4">Добавить номер </div>
-                                    <div class="col-4">Удалить номер </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4">79780001235 </div>
-                                    <div class="col-4">Добавить номер </div>
-                                    <div class="col-4">Удалить номер </div>
-                                </div>
-                            </div>
-
-                            <div class="col-2">Редактировать контакт</div>
-                            <div class="col-2">Удалить контакт</div>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 </body></html>

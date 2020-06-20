@@ -20,7 +20,6 @@ public class Contact extends AbstractBaseEntity {
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "contact",
-//            cascade = CascadeType.ALL,
             targetEntity = Phone.class
     )
     public List<Phone> phones;

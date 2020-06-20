@@ -4,7 +4,7 @@ import com.phonebook.exceptions.NotFoundException;
 import com.phonebook.model.Contact;
 import com.phonebook.model.Phone;
 import com.phonebook.repository.ContactRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Repository
+@Service
 public class ContactService {
 
     private final ContactRepository contactRepository;

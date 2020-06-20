@@ -3,6 +3,8 @@ package com.phonebook.web;
 import com.TestUtil;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +35,7 @@ public class TestMatcher<T> {
     }
 
     public ResultMatcher contentJson(T... expected) {
-        return contentJson(List.of(expected));
+        return contentJson(new ArrayList(Arrays.asList(expected)));
     }
 
     public ResultMatcher contentJson(Iterable<T> expected) {

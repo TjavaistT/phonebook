@@ -73,9 +73,3 @@ function addContact() {
     $('#addRow #addForm').find(":input").val("");
     $("#addRow").modal();
 }
-
-function showContact() {
-    $("#editRow .modal-title").html('Контакт');
-    $('#editRow #detailsForm').find(":input").val("");
-    $("#editRow").modal();
-}

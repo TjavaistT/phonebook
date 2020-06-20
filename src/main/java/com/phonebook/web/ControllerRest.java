@@ -1,5 +1,6 @@
 package com.phonebook.web;
 
+import com.phonebook.exceptions.NotFoundException;
 import com.phonebook.exceptions.RestNotFoundException;
 import com.phonebook.model.Contact;
 import com.phonebook.model.Phone;
@@ -67,7 +68,7 @@ public class ControllerRest {
     @PostMapping(value = CONTACT + "/{id}")
     public Contact editContact(@PathVariable int id, @RequestBody Contact newContact)
     {
-        Contact contact = contactService.getById(id).orElseThrow();
+        Contact contact = contactService.getById(id).orElseThrow(() -> new NotFoundException("Контакт не найден"));
 
         contact.setNumbers(newContact.getNumbers());
         contact.setName(newContact.getName());
@@ -97,13 +98,13 @@ public class ControllerRest {
     @DeleteMapping(value = CONTACT + "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteContact(@PathVariable Integer id) throws RestNotFoundException, RestBadRequest {
-            contactService.deleteById(id);
+        contactService.deleteById(id);
     }
 
     @PostMapping(value = CONTACTS + "/{contactId}" + ADD_PHONE)
     @ResponseStatus(HttpStatus.CREATED)
     public Phone addPhone(@RequestBody Phone phone, @PathVariable int contactId) {
-        phone.setContact(contactService.getById(contactId).orElseThrow());
+        phone.setContact(contactService.getById(contactId).orElseThrow(() -> new NotFoundException("Контакт не найден")));
         phoneService.addOrUpdate(phone);
         return phone;
     }
