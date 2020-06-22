@@ -1,0 +1,2 @@
+call mvn -DskipTests=true clean package
+call java -Dspring.profiles.active="datajpa,heroku" -DDATABASE_URL="postgresql://postgres:password@localhost:5432/phonebook" -DTOPJAVA_ROOT="." -jar target/dependency/webapp-runner.jar target/*.war
