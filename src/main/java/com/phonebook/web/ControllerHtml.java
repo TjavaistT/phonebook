@@ -32,6 +32,11 @@ public class ControllerHtml {
         this.restController = restController;
     }
 
+    @GetMapping
+    public String start(){
+        return "start";
+    }
+
     @GetMapping(CONTACTS + GET_ALL)
     public String showPhones(Model model){
         model.addAttribute("contacts", restController.getAll());
