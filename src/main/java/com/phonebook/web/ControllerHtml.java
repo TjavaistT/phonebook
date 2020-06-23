@@ -67,7 +67,7 @@ public class ControllerHtml {
     }
 
     @GetMapping(CONTACTS + ADD_CONTACT)
-    public String add(Model model, HttpServletRequest request){
+    public String addContact(Model model, HttpServletRequest request){
 
         Contact contact = getContactFromRequest(request);
 
@@ -75,7 +75,7 @@ public class ControllerHtml {
 
         model.addAttribute("contacts", restController.getAllContacts());
 
-        return "redirect:/contacts/response";
+        return "redirect:/contacts";
     }
 
     @PostMapping(value = CONTACTS + CONTACT +"/{contactId}/save")

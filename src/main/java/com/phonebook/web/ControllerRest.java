@@ -22,7 +22,7 @@ public class ControllerRest {
     public static final String SEARCH_BY_NUMBER = "/searchByNumber";
     public static final String SEARCH_BY_NAME = "/searchByName";
     public static final String GET_ALL = "/response";
-    public static final String ADD_CONTACT = "/createNewContact";
+    public static final String ADD_CONTACT = "/new";
     public static final String PHONE = "/phone";
     public static final String CONTACT = "/contact";
     public static final String CONTACTS = "/contacts";
