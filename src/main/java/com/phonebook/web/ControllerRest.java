@@ -40,9 +40,39 @@ public class ControllerRest {
         this.phoneService = phoneService;
     }
 
-    @GetMapping(CONTACTS + GET_ALL)
-    public List<Contact> getAll() {
+    @GetMapping(CONTACTS)
+    public List<Contact> getAllContacts() {
         return contactService.getAllContacts();
+    }
+
+    @GetMapping(CONTACTS + SEARCH_BY_NUMBER)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Contact> searchByPhone(@RequestParam(PHONE_SEARCH_PARAM) long number){
+        return contactService.searchByPhone(number);
+    }
+
+    @GetMapping(CONTACTS + SEARCH_BY_NAME)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Contact> searchByName(@RequestParam(NAME_SEARCH_PARAM) String name){
+        return contactService.searchByName(name);
+    }
+
+    @DeleteMapping(value = CONTACTS + "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteContact(@PathVariable Integer id) throws RestNotFoundException, RestBadRequest {
+        contactService.deleteById(id);
+    }
+
+    @PostMapping(value = CONTACTS + ADD_CONTACT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contact addContact(@RequestBody Contact contact){
+        contactService.add(contact);
+        return contact;
+    }
+
+    @GetMapping(value = CONTACTS + "/{id}")
+    public Contact getContact(@PathVariable int id){
+        return contactService.getById(id).orElse(null);
     }
 
     @GetMapping(PHONE + "/{id}")
@@ -58,11 +88,6 @@ public class ControllerRest {
         contact.setNumbers(Collections.singletonList(phone));
 
         return contact;
-    }
-
-    @GetMapping(value = CONTACT + "/{id}")
-    public Contact getContact(@PathVariable int id){
-        return contactService.getById(id).orElse(null);
     }
 
     @PostMapping(value = CONTACT + "/{id}")
@@ -88,19 +113,6 @@ public class ControllerRest {
         return phone;
     }
 
-    @PostMapping(value = CONTACTS + ADD_CONTACT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Contact addContact(@RequestBody Contact contact){
-        contactService.add(contact);
-        return contact;
-    }
-
-    @DeleteMapping(value = CONTACT + "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContact(@PathVariable Integer id) throws RestNotFoundException, RestBadRequest {
-        contactService.deleteById(id);
-    }
-
     @PostMapping(value = CONTACTS + "/{contactId}" + ADD_PHONE)
     @ResponseStatus(HttpStatus.CREATED)
     public Phone addPhone(@RequestBody Phone phone, @PathVariable int contactId) {
@@ -113,18 +125,6 @@ public class ControllerRest {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePhone(@PathVariable int id){
         phoneService.deleteById(id);
-    }
-
-    @GetMapping(CONTACTS + SEARCH_BY_NAME)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Contact> searchByName(@RequestParam(NAME_SEARCH_PARAM) String name){
-        return contactService.searchByName(name);
-    }
-
-    @GetMapping(CONTACTS + SEARCH_BY_NUMBER)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Contact> searchByPhone(@RequestParam(PHONE_SEARCH_PARAM) long number){
-        return contactService.searchByPhone(number);
     }
 
 }

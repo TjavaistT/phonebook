@@ -50,7 +50,7 @@
         </section>
 
         <button class="btn btn-primary addContact">
-            Добавить
+            Добавить контакт
         </button>
 
         <section id="contactsList" class="container pt-3 ">
@@ -94,7 +94,7 @@
                     <a href="#" class="editContact ">Редактировать контакт</a>
                 </div>
                 <div class="col-1 border-bottom border-dark  py-3">
-                    <a class="deleteContact" href="/contact/${contact.id()}">Удалить контакт</a>
+                    <a class="deleteContact" href="/contacts/${contact.id()}">Удалить контакт</a>
                 </div>
             </div>
 

@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.phonebook.web.ControllerRest.*;
 
@@ -34,17 +32,17 @@ public class ControllerHtml {
 
     @GetMapping
     public String start(){
-        return "start";
+        return "redirect:/contacts";
     }
 
-    @GetMapping(CONTACTS + GET_ALL)
-    public String showPhones(Model model){
-        model.addAttribute("contacts", restController.getAll());
+    @GetMapping(CONTACTS)
+    public String getAllContacts(Model model){
+        model.addAttribute("contacts", restController.getAllContacts());
         return "contacts";
     }
 
     @GetMapping(CONTACTS + SEARCH_BY_NUMBER)
-    public String searchByPhoneNumber(Model model, HttpServletRequest request){
+    public String searchByPhone(Model model, HttpServletRequest request){
         try {
             long phone = Long.parseLong(request.getParameter(PHONE_SEARCH_PARAM).trim());
             model.addAttribute("contacts", restController.searchByPhone(phone));
@@ -61,18 +59,11 @@ public class ControllerHtml {
         return "contacts";
     }
 
-    @GetMapping(PHONE + "/{id}")
-    public String deletePhone(@PathVariable int id, Model model){
-        restController.deletePhone(id);
-        model.addAttribute("contacts", restController.getAll());
-        return "redirect:/contacts/response";
-    }
-
-    @GetMapping(CONTACT + "/{id}")
+    @GetMapping(CONTACTS + "/{id}")
     public String deleteContact(Model model, @PathVariable Integer id) {
         restController.deleteContact(id);
-        model.addAttribute("contacts", restController.getAll());
-        return "redirect:/contacts/response";
+        model.addAttribute("contacts", restController.getAllContacts());
+        return "redirect:/contacts";
     }
 
     @GetMapping(CONTACTS + ADD_CONTACT)
@@ -82,7 +73,7 @@ public class ControllerHtml {
 
         restController.addContact(contact);
 
-        model.addAttribute("contacts", restController.getAll());
+        model.addAttribute("contacts", restController.getAllContacts());
 
         return "redirect:/contacts/response";
     }
@@ -108,11 +99,17 @@ public class ControllerHtml {
 
         restController.addContact(contact);
 
-        model.addAttribute("contacts", restController.getAll());
+        model.addAttribute("contacts", restController.getAllContacts());
 
         return "redirect:/contacts/response";
     }
 
+    @GetMapping(PHONE + "/{id}")
+    public String deletePhone(@PathVariable int id, Model model){
+        restController.deletePhone(id);
+        model.addAttribute("contacts", restController.getAllContacts());
+        return "redirect:/contacts/response";
+    }
 
     @PostMapping(value = CONTACTS + PHONE + "/save")
     public String addPhone(
@@ -125,7 +122,7 @@ public class ControllerHtml {
 
         restController.addPhone(phone, contactId);
 
-        model.addAttribute("contacts", restController.getAll());
+        model.addAttribute("contacts", restController.getAllContacts());
 
         return "redirect:/contacts/response";
     }
@@ -150,12 +147,5 @@ public class ControllerHtml {
                 .map(Long::parseLong)
                 .map(Phone::new)
                 .toArray(Phone[]::new);
-    }
-
-
-    private int getId(HttpServletRequest request) {
-        if (Objects.isNull(request)) { throw new IllegalArgumentException();}
-
-        return Integer.parseInt(request.getParameter("id"));
     }
 }
