@@ -6,7 +6,6 @@ import com.phonebook.model.Phone;
 import com.phonebook.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,9 +33,9 @@ public class ContactService {
     }
 
     public List<Contact> getAllContacts() {
-        List<Contact> contacts = new ArrayList<>();
-        contactRepository.findAll().forEach(contacts::add);
-        return contacts;
+
+        return contactRepository.findAllByOrderByNameAsc();
+
     }
 
     public Contact add(Contact contact) {

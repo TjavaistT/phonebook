@@ -10,8 +10,11 @@ import java.util.List;
 
 @Repository
 public interface ContactRepository extends CrudRepository<Contact, Integer> {
+
         List<Contact> findByNameContainingIgnoreCase(String name);
 
         @Query("select c from Contact c, Phone p where p.phoneNumber = ?1 and c.id = p.contact.id")
         List<Contact> findByNumber(long number);
+
+        List<Contact> findAllByOrderByNameAsc();
 }
