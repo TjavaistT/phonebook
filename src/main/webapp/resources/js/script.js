@@ -50,7 +50,7 @@ function createAddPhoneForm(addLink) {
 
     var contactId = $(addLink).closest("div.contact").data("contactid");
 
-    var form = $('<form class="addPhoneForm" name="addPhone" method="post"  action="phone/save" >'
+    var form = $('<form class="addPhoneForm" name="addPhone" method="post"  action="/contacts/' + contactId + '/phones/new" >'
                 + '<input type="text"   name="' + newPhoneClass + '" class="newPhoneClass col-12 mb-2" />'
                 + '<input type="hidden" name="contactid" value="' + contactId + '" />'
                 + '<button class="btn btn-primary" name="savePhone" type="submit"> Сохранить </button>'
@@ -61,7 +61,7 @@ function createAddPhoneForm(addLink) {
 
 function toEditContactForm(contact) {
     var contactid = $(contact).data("contactid");
-    $(contact).wrap('<form name="editContact" method="post" class="editContactForm col-12" action="contact/' + $.trim(contactid) + '/save" />');
+    $(contact).wrap('<form name="editContact" method="post" class="editContactForm col-12" action="contacts/' + $.trim(contactid) + '" />');
 }
 
 function replaceToSaveEditedButton(contact) {

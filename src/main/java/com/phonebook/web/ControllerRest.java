@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class ControllerRest {
     public static final String SEARCH_BY_NUMBER = "/searchByNumber";
     public static final String SEARCH_BY_NAME = "/searchByName";
     public static final String GET_ALL = "/response";
-    public static final String ADD_CONTACT = "/new";
-    public static final String PHONE = "/phone";
+    public static final String NEW = "/new";
+    public static final String PHONES = "/phones";
     public static final String CONTACT = "/contact";
     public static final String CONTACTS = "/contacts";
     public static final String PHONE_SEARCH_PARAM = "phoneSubstring";
@@ -63,9 +64,9 @@ public class ControllerRest {
         contactService.deleteById(id);
     }
 
-    @PostMapping(value = CONTACTS + ADD_CONTACT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = CONTACTS + NEW, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Contact addContact(@RequestBody Contact contact){
+    public Contact  addContact(@RequestBody Contact contact){
         contactService.add(contact);
         return contact;
     }
@@ -75,7 +76,7 @@ public class ControllerRest {
         return contactService.getById(id).orElse(null);
     }
 
-    @GetMapping(PHONE + "/{id}")
+    @GetMapping(PHONES + "/{id}")
     public Contact getPhone(@PathVariable Integer id){
         Phone phone = phoneService.getById(id);
 
@@ -90,21 +91,38 @@ public class ControllerRest {
         return contact;
     }
 
-    @PostMapping(value = CONTACT + "/{id}")
+    @PostMapping(value = CONTACTS + "/{id}")
     public Contact editContact(@PathVariable int id, @RequestBody Contact newContact)
     {
         Contact contact = contactService.getById(id).orElseThrow(() -> new NotFoundException("Контакт не найден"));
 
-        contact.setNumbers(newContact.getNumbers());
         contact.setName(newContact.getName());
+
+        List<Phone> oldNumbers = contact.getNumbers();
+        List<Phone> newNumbers = newContact.getNumbers();
+
+        if(newNumbers == null) oldNumbers = new ArrayList<>();
+
+        for (int i = 0; i < oldNumbers.size(); i++) {
+            Phone oldNumber = oldNumbers.get(i);
+            for (int j = 0, newNumbersSize = newNumbers.size(); j < newNumbersSize; j++) {
+                if(i == j){
+                    Phone newNumber = newNumbers.get(j);
+                    oldNumber.setPhoneNumber(newNumber.getPhoneNumber());
+                }
+            }
+        }
+
+        contact.setNumbers(oldNumbers);
+        contactService.add(contact);
 
         return contact;
     }
 
-    @PostMapping(PHONE + "/{id}")
-    public Phone editPhone(@PathVariable int id, @RequestBody Phone newPhone)
+    @PostMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}")
+    public Phone updatePhone(@PathVariable int phoneId, @RequestBody Phone newPhone)
     {
-        Phone phone = phoneService.getById(id);
+        Phone phone = phoneService.getById(phoneId);
 
         phone.setPhoneNumber(newPhone.getPhoneNumber());
 
@@ -113,7 +131,7 @@ public class ControllerRest {
         return phone;
     }
 
-    @PostMapping(value = CONTACTS + "/{contactId}" + ADD_PHONE)
+    @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Phone addPhone(@RequestBody Phone phone, @PathVariable int contactId) {
         phone.setContact(contactService.getById(contactId).orElseThrow(() -> new NotFoundException("Контакт не найден")));
@@ -121,10 +139,21 @@ public class ControllerRest {
         return phone;
     }
 
-    @DeleteMapping(PHONE + "/{id}")
+    @DeleteMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePhone(@PathVariable int id){
-        phoneService.deleteById(id);
+    public void deletePhone(@PathVariable int contactId, @PathVariable int phoneId){
+        Contact contact = contactService.getById(contactId).orElse(null);
+
+        if(contact != null) phoneService.deleteById(phoneId);
     }
 
+    @GetMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Phone getPhone(@PathVariable int contactId, @PathVariable int phoneId){
+        Phone phone = phoneService.getById(phoneId);
+
+        if(phone == null || phone.getContact().getId() != contactId) return null;
+
+        return phone;
+    }
 }

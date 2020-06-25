@@ -80,7 +80,7 @@
                                 ${phone.phoneNumber}
                         </div>
                         <div class="col-4">
-                            <a href="/phone/${phone.id()}" class="deletePhone  py-3" >Удалить номер</a>
+                            <a href="/contacts/${contact.id()}/phones/${phone.id()}/delete" class="deletePhone  py-3" >Удалить номер</a>
                         </div>
 
                     </div>
@@ -94,7 +94,7 @@
                     <a href="#" class="editContact ">Редактировать контакт</a>
                 </div>
                 <div class="col-1 border-bottom border-dark  py-3">
-                    <a class="deleteContact" href="/contacts/${contact.id()}">Удалить контакт</a>
+                    <a class="deleteContact" href="/contacts/${contact.id()}/delete">Удалить контакт</a>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
 
     <footer class="text-center">
         <div class="container">
-            Код на github <a href="" target="_blank">Телефонная книга(Java)</a>
+            Код на github <a href="https://github.com/TjavaistT/phonebook" target="_blank">Телефонная книга(Java)</a>
         </div>
     </footer>
 
@@ -112,7 +112,7 @@
 
 <div id="addRow" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <form class="modal-content modal-form" action="${ControllerRest.CONTACTS}${ControllerRest.ADD_CONTACT}" >
+        <form class="modal-content modal-form" action="${ControllerRest.CONTACTS}${ControllerRest.NEW}" >
             <div class="modal-header">
                 <h4 class="modal-title" ></h4>
                 <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">×</button>

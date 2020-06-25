@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.phonebook.web.ControllerRest.*;
 
@@ -59,14 +60,14 @@ public class ControllerHtml {
         return "contacts";
     }
 
-    @GetMapping(CONTACTS + "/{id}")
+    @GetMapping(CONTACTS + "/{id}" + "/delete")
     public String deleteContact(Model model, @PathVariable Integer id) {
         restController.deleteContact(id);
         model.addAttribute("contacts", restController.getAllContacts());
         return "redirect:/contacts";
     }
 
-    @GetMapping(CONTACTS + ADD_CONTACT)
+    @GetMapping(CONTACTS + NEW)
     public String addContact(Model model, HttpServletRequest request){
 
         Contact contact = getContactFromRequest(request);
@@ -78,53 +79,53 @@ public class ControllerHtml {
         return "redirect:/contacts";
     }
 
-    @PostMapping(value = CONTACTS + CONTACT +"/{contactId}/save")
+    @PostMapping(CONTACTS + "/{contactId}")
     public String updateContact(
             Model model,
             @PathVariable int contactId,
             HttpServletRequest request){
 
         Contact requestContact = getContactFromRequest(request);
-        Contact contact = restController.getContact(contactId);
+//        Contact contact = restController.getContact(contactId);
+//
+//        List<Phone> numbers = contact.getNumbers();
+//        if (!numbers.isEmpty()){
+//            for (Phone number : numbers) {
+//                restController.deletePhone(contact.getId(), number.getId());
+//            }
+//        }
+//
+//        contact.setName(requestContact.getName());
+//        contact.setNumbers(requestContact.getNumbers());
 
-        List<Phone> numbers = contact.getNumbers();
-        if (!numbers.isEmpty()){
-            for (Phone number : numbers) {
-                restController.deletePhone(number.getId());
-            }
-        }
-
-        contact.setName(requestContact.getName());
-        contact.setNumbers(requestContact.getNumbers());
-
-        restController.addContact(contact);
+//        restController.addContact(contact);
+        restController.editContact(contactId, requestContact);
 
         model.addAttribute("contacts", restController.getAllContacts());
 
-        return "redirect:/contacts/response";
+        return "redirect:/contacts";
     }
 
-    @GetMapping(PHONE + "/{id}")
-    public String deletePhone(@PathVariable int id, Model model){
-        restController.deletePhone(id);
+    @GetMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}/delete")
+    public String deletePhone(@PathVariable int contactId, @PathVariable int phoneId, Model model){
+        restController.deletePhone(contactId, phoneId);
         model.addAttribute("contacts", restController.getAllContacts());
-        return "redirect:/contacts/response";
+        return "redirect:/contacts";
     }
 
-    @PostMapping(value = CONTACTS + PHONE + "/save")
+    @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new")
     public String addPhone(
             Model model,
-            HttpServletRequest request
+            HttpServletRequest request,
+            @PathVariable int contactId
     ){
         Phone phone = getPhoneFromRequest(request);
-
-        int contactId = Integer.parseInt(request.getParameter("contactid"));
 
         restController.addPhone(phone, contactId);
 
         model.addAttribute("contacts", restController.getAllContacts());
 
-        return "redirect:/contacts/response";
+        return "redirect:/contacts";
     }
 
     private Contact getContactFromRequest(HttpServletRequest request) {
@@ -141,11 +142,17 @@ public class ControllerHtml {
     }
 
     private Phone[] getRequestPhones(HttpServletRequest request) {
-        return Arrays.stream(request.getParameterValues(PHONE_NUMBER_NAME))
-                .filter(number -> number != null && !number.isEmpty())
-                .map(String::trim)
-                .map(Long::parseLong)
-                .map(Phone::new)
-                .toArray(Phone[]::new);
+        String[] numbers = request.getParameterValues(PHONE_NUMBER_NAME);
+
+        if (numbers != null){
+            return Arrays.stream(numbers)
+                    .filter(number -> number != null && !number.isEmpty())
+                    .map(String::trim)
+                    .map(Long::parseLong)
+                    .map(Phone::new)
+                    .toArray(Phone[]::new);
+        } else {
+            return new Phone[0];
+        }
     }
 }

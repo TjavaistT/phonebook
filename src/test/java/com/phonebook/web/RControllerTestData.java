@@ -4,7 +4,6 @@ import com.phonebook.model.Contact;
 import com.phonebook.model.Phone;
 
 import java.net.URI;
-import java.util.List;
 
 import static com.phonebook.web.ControllerRest.REST;
 
@@ -32,10 +31,10 @@ public class RControllerTestData {
     ;
 
     public static final URI
-            ADD_CONTACT_URI = URI.create(REST + ControllerRest.CONTACTS + ControllerRest.ADD_CONTACT + "/"),
+            ADD_CONTACT_URI = URI.create(REST + ControllerRest.CONTACTS + ControllerRest.NEW + "/"),
             ADD_PHONE_URI = URI.create(REST + ControllerRest.CONTACTS + "/" + CONTACT_ID + ControllerRest.ADD_PHONE ),
             GET_ALL_URI = URI.create(REST + ControllerRest.CONTACTS + ControllerRest.GET_ALL + "/"),
-            PHONE_URI = URI.create(REST + ControllerRest.PHONE + "/" + PHONE_ID),
+            PHONE_URI = URI.create(REST + ControllerRest.PHONES + "/" + PHONE_ID),
             CONTACT_URI = URI.create(REST + ControllerRest.CONTACT + "/" + CONTACT_ID),
             SEARCH_NAME = URI.create(REST + ControllerRest.CONTACTS + ControllerRest.SEARCH_BY_NAME + "?" + "nameSubstring" + "=" + CONTACT_GERHARD.getName()),
             SEARCH_PHONE = URI.create(REST + ControllerRest.CONTACTS + ControllerRest.SEARCH_BY_NUMBER + "?" + "phoneSubstring" + "=" + CONTACT_GERHARD.getNumbers().get(1).getPhoneNumber());
