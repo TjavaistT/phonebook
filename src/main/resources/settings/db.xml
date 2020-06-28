@@ -26,21 +26,22 @@
     <!--<bean id="dataSource"
         class="org.apache.tomcat.jdbc.pool.DataSource"
         p:driverClassName="org.postgresql.Driver"
-        p:url="${database.url}"
+        p:url="postgresql://postgres:password@localhost:5432/phonebook"
         p:username="${database.username}"
         p:password="${database.password}"/>-->
 
     <context:property-placeholder location="classpath:db/heroku.properties" system-properties-mode="OVERRIDE"/>
 
     <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="${DATABASE_URL}"/>
+        <constructor-arg value="postgres://skusmswiplnkdk:e85b5f937a68f0b8482513201c02bffa3663b9b7d93fd1d95ad91aa90c99224d@ec2-54-75-229-28.eu-west-1.compute.amazonaws.com:5432/d47r2qtvn52i80"/>
+        <constructor-arg value="postgres://skusmswiplnkdk:e85b5f937a68f0b8482513201c02bffa3663b9b7d93fd1d95ad91aa90c99224d@ec2-54-75-229-28.eu-west-1.compute.amazonaws.com:5432/d47r2qtvn52i80"/>
     </bean>
 
     <bean id="dataSource"
           class="org.apache.tomcat.jdbc.pool.DataSource"
-          p:url="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + @dbUrl.getPath() }"
-          p:username="#{ @dbUrl.getUserInfo().split(':')[0] }"
-          p:password="#{ @dbUrl.getUserInfo().split(':')[1] }"
+          p:url="jdbc:postgresql://ec2-54-75-229-28.eu-west-1.compute.amazonaws.com:5432/d47r2qtvn52i80"
+          p:username="skusmswiplnkdk"
+          p:password="e85b5f937a68f0b8482513201c02bffa3663b9b7d93fd1d95ad91aa90c99224d"
           p:driverClassName="org.postgresql.Driver"
           p:validationQuery="SELECT 1"
           p:maxActive="10"
@@ -52,8 +53,6 @@
           p:removeAbandoned="true"
           p:testOnConnect="true"
           p:testWhileIdle="true"/>
-
-
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
