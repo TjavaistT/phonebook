@@ -16,6 +16,9 @@
 </head>
 <body>
 
+<div id="react"></div>
+<script type="text/javascript" src="../resources/js/bundle.js"></script>
+
 <div class="jumbotron">
     <div class="container mb-4">
         <h3 class="text-center">Телефонный справочник</h3>
