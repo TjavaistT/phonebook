@@ -1,18 +1,28 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React, {Component} from 'react'
+import {render} from 'react-dom'
+import SearchBlock from './SearchBlock'
+import AddContactForm from './AddContactForm'
+import Contacts from './Contacts'
+import Footer from './Footer'
+import 'bootstrap/dist/css/bootstrap.css'
 
-
-class Phonebook extends React.Component {
-
-    render() {
-        console.log("react work");
+class Phonebook extends Component {
+    render(){
         return (
-            <div data-test="test-attribute"></div>
+            <div>
+                <div className="jumbotron">
+                    <div className="container mb-4">
+                        <h3 className="text-center">Телефонный справочник</h3>
+                        <SearchBlock />
+                        <AddContactForm />
+                        <Contacts />
+                    </div>
+                    <Footer />
+                </div>
+            </div>
         )
     }
 }
 
-ReactDOM.render(
-    <Phonebook />,
-    document.getElementById('react')
-)
+
+render(<Phonebook />, document.getElementById('react'))
