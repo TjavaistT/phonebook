@@ -3,15 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default class AddContactForm extends Component {
 
-    addContact(){
-        // $("#addRow .modal-title").html('Добавить контакт');
-        // $('#addRow #addForm').find(":input").val("");
-        $("#addRow").modal();
-    }
-
-    // closeWindow = {
-    //     closeNoty()
-    // }
+    addContact(){$("#addRow").modal();}
 
     render() {
         return (

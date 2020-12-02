@@ -7,7 +7,7 @@ export default class Footer extends Component {
             <footer className="text-center">
                 <div className="container">
                     Код на github
-                    <a href="https://github.com/TjavaistT/phonebook" target="_blank">Телефонная книга(Java)</a>
+                    <a href="https://github.com/TjavaistT/phonebook" target="_blank"> Телефонная книга(Java)</a>
                 </div>
             </footer>
         )

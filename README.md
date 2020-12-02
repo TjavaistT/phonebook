@@ -55,7 +55,10 @@
 | удалить телефон         | contacts/{contactid}/phones/{phoneId}/delete	: contacts/{contactId}/phones/{phoneId} DELETE                 |
 | обновить телефон        |  - : contacts/{contactId}/phones/{phoneId} POST |
 | получить телефон        |  - :  contacts/{contactId}/phones/{phoneId}          |
-	        	
+
+Пример использования (добавить контакт):
+
+curl -X POST https://phonebook-for-naumen.herokuapp.com/rest/contacts/new -d "{\"id\":100030,\"name\":\"Бертрам\",\"phones\":[{\"id\":100032,\"phoneNumber\":79995556688}]}" -H "Content-Type:application/json"
 
 #### Используемые технологии
 * Spring

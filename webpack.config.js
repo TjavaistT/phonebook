@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
     entry: './src/main/js/phonebook.js',
-    devtool: 'source-map',
+    devtool: 'cheap-module-source-map',
     cache: true,
     mode: 'development',
     output: {

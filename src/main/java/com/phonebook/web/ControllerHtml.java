@@ -106,13 +106,6 @@ public class ControllerHtml {
         return "redirect:/contacts";
     }
 
-    @GetMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}/delete")
-    public String deletePhone(@PathVariable int contactId, @PathVariable int phoneId, Model model){
-        restController.deletePhone(contactId, phoneId);
-        model.addAttribute("contacts", restController.getAllContacts());
-        return "redirect:/contacts";
-    }
-
     @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new")
     public String addPhone(
             Model model,

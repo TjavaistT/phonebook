@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 
-export default class AddPhoneForm extends Component {
+export default class AddPhoneForm extends PureComponent {
 
     constructor(props) {
         super(props);

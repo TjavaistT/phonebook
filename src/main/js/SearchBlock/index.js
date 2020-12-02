@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import SearchForm from "./SearchForm";
 import 'bootstrap/dist/css/bootstrap.css'
 
-export default class SearchBlock extends Component {
+export default class SearchBlock extends PureComponent {
 
     render() {
         return (

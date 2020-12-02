@@ -8,13 +8,40 @@ export default class Contacts extends Component{
         this.state = {contacts:[]}
     }
 
-    componentDidMount() {
+    getContacts(){
         let currentUrl = location.href;
         let restUrl = currentUrl.replace(location.pathname, '/rest' + location.pathname)
 
         fetch(restUrl)
             .then(res => res.json())
-            .then(result => {this.setState({contacts:result})})
+            .then(result => {
+                this.setState({
+                    contacts:result
+                })
+            })
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(
+            () => this.getContacts(),
+            1000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID)
+    }
+
+    getRenderedContact(contact){
+        let phones_key = contact.phones.map(obj => obj.phoneNumber).reduce(function(a, b) {
+            return "" + a + b;
+        })
+
+        return (
+            <div key={contact.id + contact.name + phones_key}>
+                <Contact contact={contact}/>
+            </div>
+        )
     }
 
     render(){
@@ -28,11 +55,7 @@ export default class Contacts extends Component{
                     <div className="col-2" />
                 </div>
                 {
-                    this.state.contacts.map(contact=>(
-                        <div key={contact.id}>
-                            <Contact contact={contact}/>
-                        </div>
-                    ))
+                    this.state.contacts.map(this.getRenderedContact)
                 }
             </section>
         )
