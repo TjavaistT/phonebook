@@ -1,38 +1,27 @@
 import React, {Component} from 'react'
+import DeletePhone from "./DeletePhone";
+import AddPhoneForm from "./AddPhoneForm";
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Phone extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            contact_id: this.props.contact_id,
-            phone: this.props.phone,
-            phone_counts: this.props.phone_counts
-        }
-
-        this.deleteNumber = this.deleteNumber.bind(this)
+        const {contactId, phone, borderStyle, marginStyle} = props
     }
 
-    deleteNumber(event){
-        fetch("/rest/contacts/" + this.state.contact_id + "/phones/" + this.state.phone.id, {
-                    method: 'DELETE'
-            }).catch(err => console.log(err))
+    render({contactId, phone, borderStyle, marginStyle} = this.props) {
+        const phoneNumber = phone.phoneNumber;
 
-        event.preventDefault()
-    }
-
-    render() {
         return (
-            <div>
-                <div className="col-8">
-                    {this.state.phone.phoneNumber}
-                </div>
-                <div className="col-4">
-                    <a href="#" onClick={this.deleteNumber} >
-                        Удалить номер
-                    </a>
-                </div>
+            <div className={"row " + borderStyle + marginStyle}>
+
+                <div className="col-6"> {phoneNumber} </div>
+
+                <DeletePhone gridSize="3"  contactId={contactId} phone={phone} />
+
+                <AddPhoneForm gridSize="3" phoneNumber={phoneNumber} contactId={contactId} />
+
             </div>
         )
     }

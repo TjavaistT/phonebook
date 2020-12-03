@@ -127,11 +127,10 @@ public class ControllerRest {
         phone.setPhoneNumber(newPhone.getPhoneNumber());
 
         phoneService.addOrUpdate(phone);
-
         return phone;
     }
 
-    @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new")
+    @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Phone addPhone(@RequestBody Phone phone, @PathVariable int contactId) {
         phone.setContact(contactService.getById(contactId).orElseThrow(() -> new NotFoundException("Контакт не найден")));

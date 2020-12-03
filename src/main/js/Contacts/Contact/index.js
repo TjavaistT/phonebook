@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Phone from './PhoneList/Phone'
-import AddPhoneForm from './AddPhoneForm'
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Contact extends Component {
@@ -70,7 +69,7 @@ export default class Contact extends Component {
             <form  name="editContact" method="post" className="editContactForm col-12" action={"contacts/" + this.state.contact.id}>
                 <div className="contact row " data-contactid={this.state.contact.id}>
                     <input type="text" className="col-2" name="name" defaultValue={this.state.contact.name} onChange={this.changeName.bind(this)} />
-                    <div className="col-4 phones">
+                    <div className="col-7 phones">
                         {
                             this.state.contact.phones.map(phone => (
                                 <div key={phone.id + phone.phoneNumber} className="row phone border-bottom border-dark py-3" data-phoneid={phone.id}>
@@ -84,8 +83,6 @@ export default class Contact extends Component {
                             ))
                         }
                     </div>
-
-                    <AddPhoneForm contact_id={this.props.contact.id}/>
 
                     <div className="col-2 border-bottom border-dark  py-3">
                         <button name="saveContact" type="submit" className="btn btn-primary"> Сохранить</button>
@@ -101,27 +98,28 @@ export default class Contact extends Component {
     rendNorm(){
         return(
             <div className="contact row" >
-                <div className="col-2 border-bottom border-dark py-3" >
+                <div className="col-2 border-bottom border-dark" >
                     {this.state.contact.name}
                 </div>
-                <div className="col-4 phones"  >
+                <div className="col-7"  >
                     {this.state.contact.phones.map(phone => (
-                        <div key={phone.id + phone.phoneNumber} className="row phone  border-bottom border-dark py-3">
-                            <Phone contact_id={this.state.contact.id} phone={phone} phone_counts = {this.state.contact.phones.length}/>
-                        </div>
+                            <Phone  key={phone.id + phone.phoneNumber}
+                                    contactId={this.state.contact.id}
+                                    phone={phone}
+                                    borderStyle= " border-bottom border-dark "
+                                    marginStyle = " py-3 "
+                                    />
                     ))}
                 </div>
 
-                <AddPhoneForm contact_id={this.props.contact.id}/>
-
-                <div className="col-2 border-bottom border-dark  py-3">
+                <div className="col-2  border-bottom border-dark">
                     <a href="#" className="editContact" onClick={this.editClick.bind(this)}>Редактировать контакт</a>
                 </div>
 
-                <div className="col-1 border-bottom border-dark  py-3">
-                    <a className="deleteContact" href={"/contacts/" + this.state.contact.id + "/delete"}>Удалить
-                        контакт</a>
+                <div className="col-1 border-bottom border-dark">
+                    <a className="deleteContact" href={"/contacts/" + this.state.contact.id + "/delete"}>Удалить контакт</a>
                 </div>
+
             </div>
         )
     }
