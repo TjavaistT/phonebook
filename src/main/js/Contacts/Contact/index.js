@@ -1,24 +1,37 @@
 import React, {Component} from 'react'
-import Phone from './PhoneList/Phone'
+import PhoneList from './PhoneList'
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Contact extends Component {
     constructor(props) {
         super(props);
+
+        const {contact} = this.props
+
         this.state = {
+            contact: contact,
             edit: false,
-            contact: props.contact
+            borderStyle: " border-bottom border-dark ",
+            marginStyle: " py-3 "
         }
+
+        this.editClick = this.editClick.bind(this)
+        this.delContClick = this.delContClick.bind(this)
+
     }
 
-    editClick(){
+    editClick(e){
+        e.preventDefault();
+
         this.setState({
             edit: true
         })
     }
 
-    render() {
-        if(this.state.edit) {
+    render(
+        edit = this.state.edit
+    ) {
+        if(edit) {
             return this.rendEdit();
         } else {
             return this.rendNorm();
@@ -64,61 +77,97 @@ export default class Contact extends Component {
     //
     // }
 
-    rendEdit(){
-        return(
-            <form  name="editContact" method="post" className="editContactForm col-12" action={"contacts/" + this.state.contact.id}>
-                <div className="contact row " data-contactid={this.state.contact.id}>
-                    <input type="text" className="col-2" name="name" defaultValue={this.state.contact.name} onChange={this.changeName.bind(this)} />
-                    <div className="col-7 phones">
-                        {
-                            this.state.contact.phones.map(phone => (
-                                <div key={phone.id + phone.phoneNumber} className="row phone border-bottom border-dark py-3" data-phoneid={phone.id}>
-                                    <input type="text" className="col-9" name="phoneNumber" defaultValue={phone.phoneNumber} />
-                                    <div className="col-4">
-                                        <a href={"/contacts/" + this.state.contact.id + "/phones/" + phone.id + "/delete"} className="deletePhone  py-3">
-                                            Удалить номер
-                                        </a>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
+    delContClick(event,
+                 contactId = this.state.contact.id
+    ){
+        event.preventDefault();
 
-                    <div className="col-2 border-bottom border-dark  py-3">
-                        <button name="saveContact" type="submit" className="btn btn-primary"> Сохранить</button>
-                    </div>
-                    <div className="col-1 border-bottom border-dark  py-3">
-                        <a className="deleteContact" href={"/contacts/" + this.props.contact.id + "/delete"} >Удалить контакт</a>
-                    </div>
+        fetch("/rest/contacts/" + contactId,
+            {method: 'DELETE'})
+            .catch(err => console.log(err));
+    }
+
+    deleteContactHTML(
+            delContFn = this.delContClick,
+            borderStyle = this.state.borderStyle,
+            marginStyle = this.state.marginStyle
+    ){
+        const styles = borderStyle + marginStyle
+
+        return ( <div className={"col-2 btn-link " + styles} onClick={delContFn}>
+                    <a href="#"> Удалить контакт </a>
                 </div>
-            </form>
         )
     }
 
-    rendNorm(){
+    rendEdit(
+        phones = this.state.contact.phones,
+        contactId= this.state.contact.id,
+        borderStyle=this.state.borderStyle,
+        marginStyle=this.state.marginStyle,
+        edit=this.state.edit
+    ){
+        const styles = this.state.borderStyle + this.state.marginStyle
+        return(
+            <div className="contact row">
+                <form  name="editContact" method="post" className="editContactForm col-12" action={"contacts/" + this.state.contact.id}>
+                    <div className="contact row " data-contactid={this.state.contact.id}>
+                        <div className={"col-2  text-center " + styles}>
+                            <input type="text" className="w-100" name="name" value={this.state.contact.name} onChange={this.changeName.bind(this)} />
+                        </div>
+
+                        <PhoneList
+                            phones = {phones}
+                            contactId = {contactId}
+                            gridSize = "6"
+                            borderStyle =  {borderStyle}
+                            marginStyle = {marginStyle}
+                            edit = {edit}
+                        />
+
+                        <div className={"col-2 " + styles}>
+                            <button name="saveContact" type="submit" className="d-block btn-primary"> Сохранить контакт</button>
+                        </div>
+
+                        {this.deleteContactHTML()}
+
+                    </div>
+                </form>
+            </div>
+        )
+    }
+
+    rendNorm(
+        phones = this.state.contact.phones,
+        contactId= this.state.contact.id,
+        borderStyle=this.state.borderStyle,
+        marginStyle=this.state.marginStyle,
+        edit=this.state.edit,
+        editFn=this.editClick
+    ){
+
+        const styles = this.state.borderStyle + this.state.marginStyle
+
         return(
             <div className="contact row" >
-                <div className="col-2 border-bottom border-dark" >
+                <div className={"col-2" + styles} >
                     {this.state.contact.name}
                 </div>
-                <div className="col-7"  >
-                    {this.state.contact.phones.map(phone => (
-                            <Phone  key={phone.id + phone.phoneNumber}
-                                    contactId={this.state.contact.id}
-                                    phone={phone}
-                                    borderStyle= " border-bottom border-dark "
-                                    marginStyle = " py-3 "
-                                    />
-                    ))}
+
+                <PhoneList
+                    phones = {phones}
+                    contactId = {contactId}
+                    gridSize = "6"
+                    borderStyle = {borderStyle}
+                    marginStyle = {marginStyle}
+                    edit = {edit}
+                />
+
+                <div className={"col-2" + styles}>
+                    <a href="#" className="editContact" onClick={editFn}>Редактировать контакт</a>
                 </div>
 
-                <div className="col-2  border-bottom border-dark">
-                    <a href="#" className="editContact" onClick={this.editClick.bind(this)}>Редактировать контакт</a>
-                </div>
-
-                <div className="col-1 border-bottom border-dark">
-                    <a className="deleteContact" href={"/contacts/" + this.state.contact.id + "/delete"}>Удалить контакт</a>
-                </div>
+                {this.deleteContactHTML()}
 
             </div>
         )

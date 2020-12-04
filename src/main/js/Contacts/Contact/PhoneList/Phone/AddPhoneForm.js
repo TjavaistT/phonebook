@@ -5,19 +5,19 @@ export default class AddPhoneForm extends PureComponent {
     constructor(props) {
         super(props);
 
-        const {contactId, phoneNumber, gridSize} = props
+        const {contactId, phoneNumber, gridSize, addPhoneFn} = this.props
 
         this.state={
             addState: false,
             newNumber: this.props.phoneNumber
         }
 
-        this.setStateAddPhone = this.setStateAddPhone.bind(this);
+        this.setStateAdding = this.setStateAdding.bind(this);
+        this.addPhoneFn = addPhoneFn;
         this.changePhone = this.changePhone.bind(this);
-        this.addPhone = this.addPhone.bind(this);
     }
 
-    setStateAddPhone() {
+    setStateAdding() {
         this.setState({ addState: true })
     }
 
@@ -27,22 +27,8 @@ export default class AddPhoneForm extends PureComponent {
         })
     }
 
-    addPhone(e) {
-        e.preventDefault();
-        const contactId = this.props.contactId;
-        const newPhone = this.state.newNumber;
-
-        fetch("/rest/contacts/" + contactId + "/phones/new", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json;charset=utf-8'},
-            body: JSON.stringify({ "phoneNumber": newPhone })
-        }).catch(err => console.log(err));
-
-        this.setState({ addState: false })
-    }
-
     render(
-        gridSize = this.state.gridSize
+        gridSize = this.props.gridSize
     ) {
         const render = this.state.addState ? this.rendAdd() : this.rendNorm();
         return (
@@ -54,20 +40,22 @@ export default class AddPhoneForm extends PureComponent {
 
     rendAdd(
         changePhoneFn = this.changePhone,
-        addPhoneFn = this.addPhone,
-        phoneNumber = this.props.phoneNumber
+        addPhoneFn = this.addPhoneFn,
+        phoneNumber = this.state.newNumber
         ){
         return(
-            <form onSubmit={addPhoneFn} >
-                <input onChange={changePhoneFn} className="col-12 mb-2" defaultValue={phoneNumber}/>
+            <form onSubmit={(e) => addPhoneFn(this.state.newNumber, e)} >
+                <input onChange={changePhoneFn} className="col-12 mb-2 w-100" defaultValue={phoneNumber}/>
                 <button className="btn btn-primary" type="submit"> Сохранить </button>
             </form>
         )
     }
 
     rendNorm(
-        stateAddPhoneFn = this.setStateAddPhone
+        stateAdding = this.setStateAdding
     ){
-        return <div className="btn btn-link" onClick={stateAddPhoneFn} >Добавить номер</div>
+        return  <div onClick={stateAdding} className="col-3 btn-link cursor-link">
+                    Добавить номер
+                </div>
     }
 }
