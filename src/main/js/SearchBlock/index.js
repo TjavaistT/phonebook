@@ -71,10 +71,6 @@ export default class SearchBlock extends Component {
 
                 <AddContactForm />
 
-                {console.log('searchUrl', searchUrl)}
-
-                {console.log('this.state.searchUrl', this.state.searchUrl)}
-
                 <Contacts loadUrl={this.state.searchUrl} isUpdate={false} />
 
             </>
