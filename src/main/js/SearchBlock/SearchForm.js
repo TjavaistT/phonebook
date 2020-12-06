@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
 
 export default class SearchForm extends Component {
     constructor(props) {

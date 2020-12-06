@@ -86,19 +86,6 @@ public class ControllerHtml {
             HttpServletRequest request){
 
         Contact requestContact = getContactFromRequest(request);
-//        Contact contact = restController.getContact(contactId);
-//
-//        List<Phone> numbers = contact.getNumbers();
-//        if (!numbers.isEmpty()){
-//            for (Phone number : numbers) {
-//                restController.deletePhone(contact.getId(), number.getId());
-//            }
-//        }
-//
-//        contact.setName(requestContact.getName());
-//        contact.setNumbers(requestContact.getNumbers());
-
-//        restController.addContact(contact);
         restController.editContact(contactId, requestContact);
 
         model.addAttribute("contacts", restController.getAllContacts());

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {render} from 'react-dom'
 import SearchBlock from './SearchBlock'
 import Footer from './Footer'
-import 'bootstrap/dist/css/bootstrap.css'
 
 
 class Phonebook extends Component {

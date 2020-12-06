@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import DeletePhone from "./DeletePhone";
 import AddPhoneForm from "./AddPhoneForm";
-import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Phone extends Component {
     constructor(props) {

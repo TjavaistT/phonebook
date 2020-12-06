@@ -5,14 +5,11 @@
 <html><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Телефонный справочник</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/css/styles.css">
-<%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" defer></script>--%>
-
+    <link rel="shortcut icon" href="../resources/images/favicon.ico">
 </head>
 <body>
-<div id="example"></div>
 <div id="react"></div>
 <script type="text/javascript" src="../resources/js/bundle.js"></script>
 

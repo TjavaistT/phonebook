@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { Modal, Button } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.css'
 
 
 export default class AddContactForm extends Component {

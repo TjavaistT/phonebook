@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import SearchForm from "./SearchForm";
 import AddContactForm from "../AddContactForm";
 import Contacts from "../Contacts";
-import 'bootstrap/dist/css/bootstrap.css'
 
 export default class SearchBlock extends Component {
     constructor(props) {

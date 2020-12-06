@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PhoneList from './PhoneList'
 import DeleteContact from './DeleteContact'
-import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Contact extends Component {
     constructor(props) {

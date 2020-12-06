@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Contact from './Contact'
-import 'bootstrap/dist/css/bootstrap.css'
 
 export default class Contacts extends Component{
     constructor(props) {
@@ -31,15 +30,11 @@ export default class Contacts extends Component{
     }
 
     componentDidMount() {
-
-        this.getContacts()
         this.timerID = setInterval(
             () => this.getContacts(),
-            5000
+            1000
         );
-
     }
-
 
 
     componentWillUnmount() {
@@ -72,7 +67,6 @@ export default class Contacts extends Component{
         contacts = this.state.contacts,
         borderStyle = this.state.borderStyle
     ){
-
         const headerContacts = (
         <div className={"row " + borderStyle}>
             <div className="col-2 ">Имя</div>
@@ -85,7 +79,10 @@ export default class Contacts extends Component{
         return(
             <section id="contactsList" className="container pt-3 ">
                 { headerContacts }
-                { contacts.map(contact => this.getRenderedContact(contact, this.delContClick.bind(this, contact.id)))}
+                { contacts.length > 0
+                    ? contacts.map(contact => this.getRenderedContact(contact, this.delContClick.bind(this, contact.id)))
+                    : ""
+                }
             </section>
         )
     }
