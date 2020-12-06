@@ -17,9 +17,6 @@ export default class SearchBlock extends Component {
     }
 
     updateSearchUrl(queryLink) {
-
-        console.log('queryLink', queryLink)
-
         this.setState({
             searchUrl: queryLink
         })
@@ -39,9 +36,6 @@ export default class SearchBlock extends Component {
         updateSearchUrl = this.updateSearchUrl,
         cancelSearch = this.cancelSearch
     ) {
-        console.log('searchUrl', searchUrl)
-        console.log('this.state.searchUrl', this.state.searchUrl)
-
         return (
             <>
                 <section id="search">
@@ -77,9 +71,11 @@ export default class SearchBlock extends Component {
 
                 <AddContactForm />
 
-                <Contacts loadUrl={this.state.searchUrl} />
-                {console.log('searchUrl end', searchUrl)}
-                {console.log('this.state.searchUrl end', this.state.searchUrl)}
+                {console.log('searchUrl', searchUrl)}
+
+                {console.log('this.state.searchUrl', this.state.searchUrl)}
+
+                <Contacts loadUrl={this.state.searchUrl} isUpdate={false} />
 
             </>
         )

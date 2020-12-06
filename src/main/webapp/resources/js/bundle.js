@@ -47468,11 +47468,13 @@ var Contacts = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, Contacts);
 
     _this = _super.call(this, props);
-    var loadUrl = _this.props.loadUrl;
+    var _this$props = _this.props,
+        loadUrl = _this$props.loadUrl,
+        isUpdate = _this$props.isUpdate;
     _this.state = {
       contacts: [],
       upCounter: -1,
-      isUpdate: false,
+      isUpdate: _this.props.isUpdate,
       borderStyle: " border-bottom border-dark "
     };
     return _this;
@@ -47483,14 +47485,9 @@ var Contacts = /*#__PURE__*/function (_Component) {
     value: function checkUpdate() {
       var _this2 = this;
 
-      fetch("http://localhost:8080/rest/upcounter").then(function (res) {
+      fetch("/rest/upcounter").then(function (res) {
         return res.json();
       }).then(function (result) {
-        console.log('result isUpdate', result);
-        console.log('result == this.state.upCounter', result == _this2.state.upCounter);
-        console.log(' this.state.upCounter', _this2.state.upCounter);
-        console.log('result ', result);
-
         if (result == _this2.state.upCounter) {
           _this2.setState({
             isUpdate: false
@@ -47510,7 +47507,6 @@ var Contacts = /*#__PURE__*/function (_Component) {
 
       var loadUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.loadUrl;
       this.checkUpdate();
-      console.log('this.state.isUpdate in getContacts', this.state.isUpdate);
 
       if (this.state.isUpdate) {
         fetch(loadUrl).then(function (res) {
@@ -47538,7 +47534,26 @@ var Contacts = /*#__PURE__*/function (_Component) {
 
       this.timerID = setInterval(function () {
         return _this4.getContacts();
-      }, 1000);
+      }, 200);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState, snapshot) {
+      var _this5 = this;
+
+      console.log('prevProps', prevProps);
+      console.log('this.props', this.props);
+      console.log('prevProps.loadUrl != this.props.loadUrl', prevProps.loadUrl != this.props.loadUrl);
+
+      if (prevProps.loadUrl != this.props.loadUrl) {
+        fetch(this.props.loadUrl).then(function (res) {
+          return res.json();
+        }).then(function (result) {
+          _this5.setState({
+            contacts: result
+          });
+        });
+      }
     }
   }, {
     key: "componentWillUnmount",
@@ -47571,7 +47586,7 @@ var Contacts = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var contacts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.state.contacts;
       var borderStyle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.borderStyle;
@@ -47590,7 +47605,7 @@ var Contacts = /*#__PURE__*/function (_Component) {
         id: "contactsList",
         className: "container pt-3 "
       }, headerContacts, contacts.length > 0 ? contacts.map(function (contact) {
-        return _this5.getRenderedContact(contact, _this5.delContClick.bind(_this5, contact.id));
+        return _this6.getRenderedContact(contact, _this6.delContClick.bind(_this6, contact.id));
       }) : "");
     }
   }]);
@@ -47829,8 +47844,8 @@ var SearchBlock = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      baseUrl: "http://localhost:8080/rest/contacts",
-      searchUrl: "http://localhost:8080/rest/contacts"
+      baseUrl: "/rest/contacts",
+      searchUrl: "/rest/contacts"
     };
     _this.updateSearchUrl = _this.updateSearchUrl.bind(_assertThisInitialized(_this));
     _this.cancelSearch = _this.cancelSearch.bind(_assertThisInitialized(_this));
@@ -47840,7 +47855,6 @@ var SearchBlock = /*#__PURE__*/function (_Component) {
   _createClass(SearchBlock, [{
     key: "updateSearchUrl",
     value: function updateSearchUrl(queryLink) {
-      console.log('queryLink', queryLink);
       this.setState({
         searchUrl: queryLink
       });
@@ -47860,8 +47874,6 @@ var SearchBlock = /*#__PURE__*/function (_Component) {
       var searchUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.searchUrl;
       var updateSearchUrl = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.updateSearchUrl;
       var cancelSearch = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : this.cancelSearch;
-      console.log('searchUrl', searchUrl);
-      console.log('this.state.searchUrl', this.state.searchUrl);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
         id: "search"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -47888,9 +47900,10 @@ var SearchBlock = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "/contacts",
         className: "btn btn-danger"
-      }, "\u041E\u0442\u043C\u0435\u043D\u0438\u0442\u044C")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AddContactForm__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contacts__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        loadUrl: this.state.searchUrl
-      }), console.log('searchUrl end', searchUrl), console.log('this.state.searchUrl end', this.state.searchUrl));
+      }, "\u041E\u0442\u043C\u0435\u043D\u0438\u0442\u044C")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AddContactForm__WEBPACK_IMPORTED_MODULE_2__["default"], null), console.log('searchUrl', searchUrl), console.log('this.state.searchUrl', this.state.searchUrl), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contacts__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        loadUrl: this.state.searchUrl,
+        isUpdate: false
+      }));
     }
   }]);
 

@@ -4,12 +4,12 @@ import Contact from './Contact'
 export default class Contacts extends Component{
     constructor(props) {
         super(props);
-        const {loadUrl} = this.props;
+        const {loadUrl, isUpdate} = this.props;
 
         this.state = {
             contacts:[],
             upCounter: -1,
-            isUpdate: false,
+            isUpdate: this.props.isUpdate,
             borderStyle: " border-bottom border-dark "
         };
     }
@@ -58,6 +58,19 @@ export default class Contacts extends Component{
             () => this.getContacts(),
             200
         );
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if(prevProps.loadUrl != this.props.loadUrl){
+            fetch(this.props.loadUrl)
+                .then(res => res.json())
+                .then(result => {
+                    this.setState({
+                        contacts: result
+                    })
+            })
+        }
     }
 
 
