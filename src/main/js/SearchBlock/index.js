@@ -8,8 +8,8 @@ export default class SearchBlock extends Component {
         super(props);
 
         this.state = {
-            baseUrl: "http://localhost:8080/rest/contacts",
-            searchUrl: "http://localhost:8080/rest/contacts"
+            baseUrl: "/rest/contacts",
+            searchUrl: "/rest/contacts"
         }
 
         this.updateSearchUrl = this.updateSearchUrl.bind(this)

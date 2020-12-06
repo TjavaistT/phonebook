@@ -15,7 +15,7 @@ export default class Contacts extends Component{
     }
 
     checkUpdate(){
-        fetch("http://localhost:8080/rest/upcounter")
+        fetch("/rest/upcounter")
             .then(res => res.json())
             .then(result => {
                 if(result == this.state.upCounter){
