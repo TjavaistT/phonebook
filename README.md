@@ -58,7 +58,7 @@
 
 Примеры использования:
 - добавить контакт
-    curl -X POST https://phonebook-for-naumen.herokuapp.com/rest/contacts/new -d "{\"id\":100030,\"name\":\"Бертрам\",\"phones\":[{\"phoneNumber\":79995556688}]}" -H "Content-Type:application/json"
+    curl -X POST https://phonebook-for-naumen.herokuapp.com/rest/contacts/new -d "{\"name\":\"Бертрам\",\"phones\":[{\"phoneNumber\":79995556688}]}" -H "Content-Type:application/json"
 
 - добавить телефон
     curl -X POST http://localhost:8080/rest/contacts/100115/phones/new -d "{\"phoneNumber\":79995557777}" -H "Content-Type:application/json"

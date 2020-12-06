@@ -5,17 +5,18 @@ export default class PhoneList extends Component {
     constructor(props) {
         super(props);
 
-        const {phones, contactId, gridSize, borderStyle, marginStyle, edit} = this.props;
+        const {phones, contactId, gridSize, borderStyle, marginStyle, edit, changePhoneNumerFn} = this.props;
 
         this.state = {
             phones: this.props.phones
         }
 
         this.addPhone = this.addPhone.bind(this, contactId)
+        //this.deletePhone
     }
 
-    deletePhone(contact_id, phoneId){
-        fetch("/rest/contacts/" + contact_id + "/phones/" + phoneId, {method: 'DELETE'})
+    deletePhone(contactId, phoneId){
+        fetch("/rest/contacts/" + contactId + "/phones/" + phoneId, {method: 'DELETE'})
             .catch(err => console.log(err))
     }
 
@@ -35,13 +36,13 @@ export default class PhoneList extends Component {
         phones = this.state.phones,
         gridSize = this.props.gridSize,
 
-        phone,
         edit = this.props.edit,
         contactId = this.props.contactId,
         borderStyle = this.props.borderStyle,
         marginStyle = this.props.marginStyle,
         deletePhoneFn = this.deletePhone,
-        addPhoneFn = this.addPhone
+        addPhoneFn = this.addPhone,
+        changePhoneNumerFn = this.props.changePhoneNumerFn
     ) {
         if(phones.length <= 0) { phones = [{"id":-1,"phoneNumber":0}] }
 
@@ -53,6 +54,7 @@ export default class PhoneList extends Component {
                     marginStyle = {marginStyle}
                     deletePhoneFn = {this.deletePhone.bind(this, contactId, phone.id)}
                     addPhoneFn = {addPhoneFn}
+                    changePhoneNumerFn ={changePhoneNumerFn}
                     edit = {edit}
             />)
 

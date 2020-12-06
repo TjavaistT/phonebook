@@ -1,4 +1,5 @@
 var path = require('path');
+const webpack = require("webpack");
 
 module.exports = {
     entry: './src/main/js/phonebook.js',
@@ -23,5 +24,13 @@ module.exports = {
             },
             {test: /\.css$/, use: 'css-loader'}
         ]
-    }
+    },
+    plugins: [
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery',
+                Popper: ['popper.js', 'default']
+            })
+    ]
 };

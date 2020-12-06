@@ -7,7 +7,7 @@ export default class Phone extends Component {
     constructor(props) {
         super(props);
 
-        const {contactId, phone, borderStyle, marginStyle, deletePhoneFn, addPhoneFn, edit} = props
+        const {phone, borderStyle, marginStyle, deletePhoneFn, addPhoneFn, /*changePhoneNumerFn,*/ edit} = props
 
     }
 
@@ -22,18 +22,17 @@ export default class Phone extends Component {
     }
 
     renderEdit(
-        contactId = this.props.contactId,
         phoneId = this.props.phone.id,
         phoneNumber = this.props.phone.phoneNumber,
-        borderStyle = this.props.borderStyle,
-        marginStyle = this.props.marginStyle,
-        deletePhoneFn = this.props.deletePhoneFn
+        styles  = this.props.borderStyle + this.props.marginStyle,
+        deletePhoneFn = this.props.deletePhoneFn,
+        changePhNumFn = this.props.changePhoneNumerFn
     ){
         return (
-            <div className={"row col-12" + borderStyle + marginStyle}>
+            <div className={"row col-12" + styles}>
 
                 <div className="col-6 ">
-                    <input type="text" className="w-100" defaultValue={phoneNumber}/>
+                    <input type="text" onChange={(e) => changePhNumFn(e, phoneId)} className="w-100" defaultValue={phoneNumber}/>
                 </div>
 
                 <DeletePhone gridSize="6"  deletePhoneFn = {deletePhoneFn} />
@@ -43,28 +42,19 @@ export default class Phone extends Component {
     }
 
     renderNorm(
-        contactId = this.props.contactId,
-        phoneId = this.props.phone.id,
         phoneNumber = this.props.phone.phoneNumber,
-        borderStyle  = this.props.borderStyle,
-        marginStyle  = this.props.marginStyle,
+        styles  = this.props.borderStyle + this.props.marginStyle,
         deletePhoneFn = this.props.deletePhoneFn,
         addPhoneFn = this.props.addPhoneFn
     ) {
         return (
-                <div className={"row" + borderStyle + marginStyle}>
+                <div className={"row" + styles}>
 
                     <div className="col-5"> {phoneNumber} </div>
 
-                    <DeletePhone
-                        gridSize="3"
-                        deletePhoneFn={deletePhoneFn} />
+                    <DeletePhone gridSize="3" deletePhoneFn={deletePhoneFn} />
 
-                    <AddPhoneForm
-                        gridSize="4"
-                        phoneNumber={phoneNumber}
-                        contactId={contactId}
-                        addPhoneFn={addPhoneFn}
+                    <AddPhoneForm gridSize="4" addPhoneFn={addPhoneFn}
                     />
 
                 </div>

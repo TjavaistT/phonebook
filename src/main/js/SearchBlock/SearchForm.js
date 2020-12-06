@@ -6,19 +6,39 @@ export default class SearchForm extends Component {
         super(props);
 
         this.state = {
-            action: props.action,
-            title: props.title,
-            name: props.name,
-            placeholder: props.placeholder
+            searchContent: ''
         }
+
+        this.changeField = this.changeField.bind(this)
+        this.search = this.search.bind(this)
     }
 
-    render(){
+    changeField(event){
+        this.setState({
+            searchContent: event.target.value
+        })
+    }
+
+    search(event){
+        event.preventDefault();
+        const searchUrl = this.props.searchUrl + "?" + this.props.queryArgument + "=" + this.state.searchContent
+
+        console.log(' searchUrl SearchForm', searchUrl)
+
+        this.props.updateSearchUrl(searchUrl)
+    }
+
+    render(
+        changeField = this.changeField,
+        search = this.search,
+        placeholder = this.props.placeholder,
+        title = this.props.title
+    ){
         return(
-            <form className="form-inline" method="get" action={this.state.action}>
+            <form onSubmit={search} className="form-inline" method="get" >
                 <div className="form-group mx-sm-3 mb-2">
-                    <label  className="mx-sm-3">{this.state.title}
-                        <input type="text"  name={this.state.name} className="form-control" placeholder={this.state.placeholder}/>
+                    <label  className="mx-sm-3">{title}
+                        <input onChange={changeField}  className="form-control" placeholder={placeholder}/>
                     </label>
                 </div>
                 <button type="submit" className="btn btn-primary mb-2">Найти</button>

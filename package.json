@@ -10,10 +10,13 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/TjavaistT/phonebook",
   "dependencies": {
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^5.0.0-alpha1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1"
+    "react-scripts": "4.0.1",
+    "react-bootstrap": "1.4.0",
+    "popper.js": "^1.14.3",
+    "jquery": "^3.2.1"
   },
   "scripts": {
     "watch": "webpack --watch -d --output ./target/phonebook/resources/js/bundle.js"

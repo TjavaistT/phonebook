@@ -5,11 +5,11 @@ export default class AddPhoneForm extends PureComponent {
     constructor(props) {
         super(props);
 
-        const {contactId, phoneNumber, gridSize, addPhoneFn} = this.props
+        const {gridSize, addPhoneFn} = this.props
 
         this.state={
             addState: false,
-            newNumber: this.props.phoneNumber
+            newNumber: "7"
         }
 
         this.setStateAdding = this.setStateAdding.bind(this);
@@ -40,12 +40,11 @@ export default class AddPhoneForm extends PureComponent {
 
     rendAdd(
         changePhoneFn = this.changePhone,
-        addPhoneFn = this.addPhoneFn,
-        phoneNumber = this.state.newNumber
+        addPhoneFn = this.addPhoneFn
         ){
         return(
             <form onSubmit={(e) => addPhoneFn(this.state.newNumber, e)} >
-                <input onChange={changePhoneFn} className="col-12 mb-2 w-100" defaultValue={phoneNumber}/>
+                <input onChange={changePhoneFn} className="col-12 mb-2 w-100" defaultValue="7"/>
                 <button className="btn btn-primary" type="submit"> Сохранить </button>
             </form>
         )
