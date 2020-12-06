@@ -47471,24 +47471,56 @@ var Contacts = /*#__PURE__*/function (_Component) {
     var loadUrl = _this.props.loadUrl;
     _this.state = {
       contacts: [],
+      upCounter: -1,
+      isUpdate: false,
       borderStyle: " border-bottom border-dark "
     };
     return _this;
   }
 
   _createClass(Contacts, [{
-    key: "getContacts",
-    value: function getContacts() {
+    key: "checkUpdate",
+    value: function checkUpdate() {
       var _this2 = this;
 
-      var loadUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.loadUrl;
-      fetch(loadUrl).then(function (res) {
+      fetch("http://localhost:8080/rest/upcounter").then(function (res) {
         return res.json();
       }).then(function (result) {
-        _this2.setState({
-          contacts: result
-        });
+        console.log('result isUpdate', result);
+        console.log('result == this.state.upCounter', result == _this2.state.upCounter);
+        console.log(' this.state.upCounter', _this2.state.upCounter);
+        console.log('result ', result);
+
+        if (result == _this2.state.upCounter) {
+          _this2.setState({
+            isUpdate: false
+          });
+        } else {
+          _this2.setState({
+            isUpdate: true,
+            upCounter: result
+          });
+        }
       });
+    }
+  }, {
+    key: "getContacts",
+    value: function getContacts() {
+      var _this3 = this;
+
+      var loadUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.loadUrl;
+      this.checkUpdate();
+      console.log('this.state.isUpdate in getContacts', this.state.isUpdate);
+
+      if (this.state.isUpdate) {
+        fetch(loadUrl).then(function (res) {
+          return res.json();
+        }).then(function (result) {
+          _this3.setState({
+            contacts: result
+          });
+        });
+      }
     }
   }, {
     key: "delContClick",
@@ -47502,10 +47534,10 @@ var Contacts = /*#__PURE__*/function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.timerID = setInterval(function () {
-        return _this3.getContacts();
+        return _this4.getContacts();
       }, 1000);
     }
   }, {
@@ -47539,7 +47571,7 @@ var Contacts = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var contacts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.state.contacts;
       var borderStyle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.borderStyle;
@@ -47558,7 +47590,7 @@ var Contacts = /*#__PURE__*/function (_Component) {
         id: "contactsList",
         className: "container pt-3 "
       }, headerContacts, contacts.length > 0 ? contacts.map(function (contact) {
-        return _this4.getRenderedContact(contact, _this4.delContClick.bind(_this4, contact.id));
+        return _this5.getRenderedContact(contact, _this5.delContClick.bind(_this5, contact.id));
       }) : "");
     }
   }]);

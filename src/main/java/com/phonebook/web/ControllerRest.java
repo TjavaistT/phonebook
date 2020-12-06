@@ -30,6 +30,9 @@ public class ControllerRest {
     public static final String PHONE_SEARCH_PARAM = "phoneSubstring";
     public static final String NAME_SEARCH_PARAM = "nameSubstring";
     public static final String ADD_PHONE = "/createNewPhone";
+    public static final String UPDATE_COUNTER = "/upcounter";
+
+    public Integer updateCounter = 0;
 
     private final ContactService contactService;
 
@@ -40,6 +43,9 @@ public class ControllerRest {
         this.contactService = contactService;
         this.phoneService = phoneService;
     }
+
+    @GetMapping(UPDATE_COUNTER)
+    public int getUpdateCounter() {return updateCounter;}
 
     @GetMapping(CONTACTS)
     public List<Contact> getAllContacts() {
@@ -61,12 +67,14 @@ public class ControllerRest {
     @DeleteMapping(value = CONTACTS + "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteContact(@PathVariable Integer id) throws RestNotFoundException, RestBadRequest {
+        updateCounter++;
         contactService.deleteById(id);
     }
 
     @PostMapping(value = CONTACTS + NEW, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Contact  addContact(@RequestBody Contact contact){
+        updateCounter++;
         contactService.add(contact);
         return contact;
     }
@@ -94,6 +102,7 @@ public class ControllerRest {
     @PostMapping(value = CONTACTS + "/{id}")
     public Contact editContact(@PathVariable int id, @RequestBody Contact newContact)
     {
+        updateCounter++;
         Contact contact = contactService.getById(id).orElseThrow(() -> new NotFoundException("Контакт не найден"));
 
         contact.setName(newContact.getName());
@@ -122,6 +131,7 @@ public class ControllerRest {
     @PostMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}")
     public Phone updatePhone(@PathVariable int phoneId, @RequestBody Phone newPhone)
     {
+        updateCounter++;
         Phone phone = phoneService.getById(phoneId);
 
         phone.setPhoneNumber(newPhone.getPhoneNumber());
@@ -133,6 +143,7 @@ public class ControllerRest {
     @PostMapping(value = CONTACTS + "/{contactId}" + PHONES + "/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Phone addPhone(@RequestBody Phone phone, @PathVariable int contactId) {
+        updateCounter++;
         phone.setContact(contactService.getById(contactId).orElseThrow(() -> new NotFoundException("Контакт не найден")));
         phoneService.addOrUpdate(phone);
         return phone;
@@ -141,6 +152,7 @@ public class ControllerRest {
     @DeleteMapping(CONTACTS + "/{contactId}" + PHONES + "/{phoneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePhone(@PathVariable int contactId, @PathVariable int phoneId){
+        updateCounter++;
         Contact contact = contactService.getById(contactId).orElse(null);
 
         if(contact != null) phoneService.deleteById(phoneId);

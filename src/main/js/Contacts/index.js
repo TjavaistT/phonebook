@@ -8,20 +8,44 @@ export default class Contacts extends Component{
 
         this.state = {
             contacts:[],
+            upCounter: -1,
+            isUpdate: false,
             borderStyle: " border-bottom border-dark "
         };
+    }
+
+    checkUpdate(){
+        fetch("http://localhost:8080/rest/upcounter")
+            .then(res => res.json())
+            .then(result => {
+                if(result == this.state.upCounter){
+                    this.setState({
+                        isUpdate:false
+                    })
+                } else {
+                    this.setState({
+                        isUpdate:true,
+                        upCounter: result
+                    })
+                }
+            })
+
     }
 
     getContacts(
         loadUrl = this.props.loadUrl
     ){
-        fetch(loadUrl)
-            .then(res => res.json())
-            .then(result => {
-                this.setState({
-                    contacts:result
+        this.checkUpdate();
+
+        if(this.state.isUpdate) {
+            fetch(loadUrl)
+                .then(res => res.json())
+                .then(result => {
+                    this.setState({
+                        contacts: result
+                    })
                 })
-            })
+        }
     }
 
     delContClick(contactId){
@@ -32,7 +56,7 @@ export default class Contacts extends Component{
     componentDidMount() {
         this.timerID = setInterval(
             () => this.getContacts(),
-            1000
+            200
         );
     }
 
