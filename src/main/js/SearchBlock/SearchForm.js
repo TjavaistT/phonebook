@@ -22,8 +22,6 @@ export default class SearchForm extends Component {
         event.preventDefault();
         const searchUrl = this.props.searchUrl + "?" + this.props.queryArgument + "=" + this.state.searchContent
 
-        console.log(' searchUrl SearchForm', searchUrl)
-
         this.props.updateSearchUrl(searchUrl)
     }
 
